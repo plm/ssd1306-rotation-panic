@@ -23,7 +23,13 @@ use ssd1306::Ssd1306;
 use inverted_pin::InvertedPin;
 
 use board::{hal, Pins, XOSC_CRYSTAL_FREQ};
-use hal::{gpio, gpio::Pin, pac, Timer, I2C};
+use hal::{
+    gpio,
+    gpio::Pin,
+    pac,
+    uart::{DataBits, StopBits, UartConfig, UartPeripheral},
+    Clock, Timer, I2C,
+};
 use seeeduino_xiao_rp2040 as board;
 
 struct Shared<T>(Mutex<RefCell<T>>);
@@ -111,6 +117,15 @@ fn main() -> ! {
     )
     .into_terminal_mode();
 
+    let uart_pins = (pins.tx.into_function(), pins.rx.into_function());
+    let (_, mut writer) = UartPeripheral::new(pac.UART0, uart_pins, &mut pac.RESETS)
+        .enable(
+            UartConfig::new(115_200.Hz(), DataBits::Eight, None, StopBits::One),
+            clocks.peripheral_clock.freq(),
+        )
+        .unwrap()
+        .split();
+
     let mut timer = Timer::new(pac.TIMER, &mut pac.RESETS, &clocks);
 
     if display.init().is_ok() && display.clear().is_ok() {
@@ -118,6 +133,9 @@ fn main() -> ! {
 
         loop {
             for count in 0..u8::MAX {
+                if let Ok(position) = display.position() {
+                    let _ = writer.write_fmt(format_args!("Iter#{}>{:?}\r\n", count, position));
+                }
                 timer.delay_ms(250);
                 let _ = writeln!(display, "{}TEST", count);
             }

@@ -12,3 +12,15 @@ Push this firmware to your Seeeduino XIAO RP2040 by holding down the `B` button 
 ```
 cargo run --release
 ```
+
+During execution, character positions are written to `UART0` at 115200 bps and will produce the following output:
+
+```
+Iter#0>(0, 1)
+Iter#1>(0, 2)
+Iter#2>(0, 3)
+Iter#3>(0, 4)
+Iter#4>(0, 5)
+Iter#5>(0, 6)
+Iter#6>(0, 7)
+```

@@ -3,7 +3,7 @@ SSD1306 Rotation Panic
 
 Reproduces a panic when using [ssd1306 version `0.8.1`](https://docs.rs/ssd1306/0.8.1/ssd1306/index.html)'s `DisplaySize128x64` with `DisplayRotation::Rotate90` or `DisplayRotation::Rotate270` in `TerminalMode`.
 
-Using a [Seeeduino XIAO RP2040](https://github.com/rp-rs/rp-hal-boards/tree/main/boards/seeeduino-xiao-rp2040) with [expansion board](https://wiki.seeedstudio.com/Seeeduino-XIAO-Expansion-Board/), this example will panic when writing the ninth test line ("7TEST"). Panic can be observed when the blue LED (GPIO 25) turns on and no additional test lines are written to the display. The output will look like:
+Using a [Seeeduino XIAO RP2040](https://github.com/rp-rs/rp-hal-boards/tree/main/boards/seeeduino-xiao-rp2040) with [expansion board](https://wiki.seeedstudio.com/Seeeduino-XIAO-Expansion-Board/), this example will panic when writing the ninth test line ("7TEST"). Panic can be observed when the blue LED (GPIO 25) turns on and no additional test lines are written to the display ([example](./sample-panic.jpg)). The display output looks like:
 
 ```
 I0123456
